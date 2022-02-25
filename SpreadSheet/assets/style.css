@@ -1,0 +1,490 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+ul[class],
+ol[class] {
+  padding: 0;
+}
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+body {
+	position: relative;
+	background: #f2f9fd;
+ 	min-height: 100vh;
+	text-rendering: optimizeSpeed;
+ 	line-height: 1.5;
+ 	font-family: 'Trebuchet MS';
+ 	letter-spacing: -1px;
+ 	padding-top: 90px;
+}
+:focus{
+	border: 0;
+	outline: none;
+}
+ul[class],
+ol[class] {
+  list-style: none;
+}
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+article > * + * {
+  margin-top: 1em;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+a {
+	text-decoration: none;
+}
+body {
+	padding: 0;
+	margin: 0;
+	background: #fff;
+	font-family: 'Trebuchet MS';
+}
+h1,h2,h3,h4,h5,h6{
+	padding: 0;
+	margin: 0;
+}
+:focus {
+	border: 0;
+	outline: none;
+}
+.header {
+	padding-top: 5px;
+	position: relative;
+}
+.container {
+	width: 100%;
+	max-width: 1100px;
+	margin: 0 auto;
+}
+.header_content {
+	background: #a4a4a4;
+	text-align: center;
+	height: 80px;
+	border: 2px solid #000;
+	padding: 10px 15px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	border-radius: 10px;
+}
+.header_text {
+	border-right: 2px solid #000;
+	padding-right: 40px;
+	color: #fff;
+	text-align: left;
+	width: 600px;
+	max-width: 600px;
+}
+.main_panel {
+	display: flex; 
+	justify-content: center;
+	margin-top: 20px;
+}
+.control_panel {
+	padding: 5px 0px;
+	position: relative;
+	margin: 5px 5px 0 5px;
+	width: 200px;
+	border: 2px solid #000;
+	border-radius: 10px;
+	background: #fff;
+}
+.control_links {
+	display: flex;
+	flex-direction: column;
+}
+.add_column,
+.add_row,
+.remove_column,
+.remove_row{
+	position: relative;
+}
+.add_column:after,
+.add_row:after,
+.remove_column:after,
+.remove_row:after{
+	content: "";
+	position: absolute;
+	right: 7%;
+	top: 25%;
+	display: block;
+	width: 17px;
+	height: 17px;
+	background-size: cover;
+}
+.add_column:after{background-image: url("imgs/add-column.png");}
+.add_row:after{background-image: url("imgs/add-row.png");}
+.remove_column:after{background-image: url("imgs/delete-column.png");}
+.remove_row:after{background-image: url("imgs/delete-row.png");}
+.control { 
+	text-align: center;
+	padding: 3px 5px;
+	color: #000;
+	border-radius: 7px;
+	cursor: pointer;
+}
+.control:hover{
+	background: #999;
+}
+.main_table_holder {
+	margin: 0 auto;
+	border: 2px solid #000;
+	border-radius: 10px;
+}
+.main_table {
+	overflow: hidden;
+}
+.column {
+	border: 1px solid #000;
+	padding: 10px;
+}
+.row {
+	border: 1px solid #000;
+	padding: 10px;
+}
+.row.clear {
+	display: none;
+}
+input:focus{
+	border: 1px solid #000;
+}
+.state_input{
+	width: 70px;
+}
+.state_save_button {
+	border: none;
+	background: lime;
+	width: 160px;
+	margin-top: 4px;
+	pointer-events: auto;
+}
+.state_save_button.clicked{
+	opacity: 0.9;
+	background: #b3ffc7;
+	color: #f3f3f3;
+	pointer-events: none;
+}
+.control_panel{
+	z-index: 1000;
+	padding: 3px;
+}
+.control_panel.states{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.column{
+	position: relative;
+	padding: 0;
+	margin: 0;
+	width: 50px;
+	height: 80px;
+	background: #f3f3f3;
+}
+.column.drag_hovered{
+	box-shadow: 0 0 2px 2px #6a6a6a;
+}
+.column_index {
+	position: absolute;
+	z-index: 5;
+	width: 15px;
+	height: 15px;
+	right: 10px;
+	bottom: 9px;
+	color: #bfbfbf;
+}
+.column_text{
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 115px;
+	height: 70px;
+	max-width: 200px;
+	max-height: 150px;
+	min-width: 50px;
+	min-height: 70px;
+}
+.column_text.drag_hovered{
+	box-shadow: 0 0 2px 2px #6a6a6a;
+}
+.main_panel_wrapper{
+	position: fixed;		
+}
+.list_name_wrapper{
+	position: fixed;
+	right: 0;
+	top: 15%;
+	margin-right: 5px;
+	border: 2px solid #000;
+	border-radius: 10px;
+	background: #fff;
+}
+.list_name{
+	z-index: 1000;
+	margin: 5px 5px 0 5px;
+	width: 200px;
+	height: 350px;
+	position: relative;
+}
+.name_input{
+	width: 100%;
+	height: 20px;
+	padding-left: 10px;
+}
+.list_controller {
+	margin-top: 10px;
+	position: absolute;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	border-top: 2px solid #000;
+}
+.list_button{
+	text-align: center;
+}
+.list_button:hover{
+	border-radius: 7px;
+	background: #999;
+	cursor: pointer;
+}
+.choice_all {}
+.clear_all {}
+.data_list{
+	display: flex;
+	flex-direction: column;
+	height: 200px;
+	overflow: auto;
+}
+.dis{
+	padding: 2px 0;
+	border-top: 1px solid #999;
+	cursor: pointer;
+}
+.dis.selected{
+	background: #b5b5b5;
+}
+.saving_progress{
+	display: flex;
+	flex-direction: column;
+	overflow: auto;
+	transition: all 0.5s;
+	display: none;
+}
+.saving_progress_button{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+	border-radius: 7px;
+	padding: 3px 5px;
+}
+.saving_progress_button:hover{
+	background: #999;
+}
+.saving_progress_button:after{
+	content: "";
+	display: block;
+	position: absolute;
+	right: 7%;
+	transform: translate(0%, 40%);
+	width: 15px;
+	height: 15px;
+	background-size: cover;
+	background-image: url("imgs/down.png");
+	transition: all 0.5s;
+}
+.saving_progress_button.showing:after{
+	transform: rotate(180deg) translate(0%, -30%);
+	transition: all 0.5s;
+}
+.saving_progress.showing{
+	display: block;
+	height: 200px;
+	transition: all 0.5s;
+}
+.settings_panel {
+	display: flex;
+	position: relative;
+}
+@keyframes spin {
+	0%{transform: rotate(0deg);}
+	100%{transform: rotate(-180deg);}
+}
+@keyframes spin_back {
+	0%{transform: rotate(-180deg);}
+	100%{transform: rotate(0deg);}
+}
+@keyframes expansion{
+	0%{
+		transform: translate(30%, -30%) scale(0.03);
+	}
+	100%{
+		transform: translate(0%, 0%) scale(1);
+	}
+}
+.cogwheel{
+	animation-name: spin;
+	animation-duration: 250ms;
+	z-index: 2000;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
+.cogwheel.spinning {
+	animation: spin .3s linear;
+}
+.cogwheel {
+	animation: spin_back .3s linear;
+}
+.cogwheel_panel {
+	z-index: 1000;
+	position: absolute; 
+	right: 34%;
+	top: 34%;
+	width: 200px;
+	height: 200px;
+	display: block;
+	background: #fff;
+	border: 2px solid #000;
+	border-radius: 5px;
+	animation: expansion 0.5s ;
+}
+.cogwheel_panel.hidden {
+	display: none;
+}
+.cogwheel_link{
+	height: 30px;
+}
+.cogwheel_value{
+	width: 50px;
+}
+.cogwheel_save_setting {
+	background: lime;
+	width:160px;
+	margin-top: 4px;
+	padding: 2px 4px;
+	cursor: pointer;"
+}
+.treangle {
+	position: absolute;
+	border: 20px solid transparent; 
+	border-right: 20px solid gray;
+	top: 50%;
+	transform: translate(-120%, -50%);
+}
+.table_save{
+	cursor: pointer;
+}
+.table_save.selected{
+	background: #999;
+	color: #f3f3f3;
+}
+.control_saves_buttons {
+	position: absolute;
+	width: 175px;
+	top: 0;
+	right: 0;
+	transform: translate(105%,0%);
+	border: 1px solid #000;
+	border-radius: 10px;
+	padding: 5px;
+	display: block;
+	z-index: 5000;
+}
+.control_saves_buttons.hidden { display: none; }
+.control_saves_button {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+.saves_button{
+	cursor: pointer;
+}
+.saves_button:hover{
+	background: #999;
+}
+.control_links {}
+.load_table_save {}
+.load_table_save.banned{
+	pointer-events: none;
+	color: #999;
+}
+.select_all_saves {}
+.delete_selected_saves {}
+@media(max-width: 1024px){
+	.control_panel{
+		position: relative;
+		height: 125px;
+	}
+}
+@media(max-width: 1260px){
+	.main_panel{
+		display: flex;
+	}
+	.control_panel{
+		position: relative;
+	}
+	.main_panel_wrapper{
+		position: absolute;
+		left: 0;
+		top: 15%;
+		display: flex;
+		justify-content: space-around;
+		flex-direction: column;
+		padding-bottom: 20px;
+	}
+	.list_name_wrapper{
+		margin-top: 5px;
+		margin-left: 5px;
+		position: relative;
+		overflow: hidden;
+	}
+	.treangle {
+		position: absolute;
+		top: 50%;
+		right: 2%;
+		transform: translate(0%, -50%);
+		z-index: 3000;
+	}
+	.main_table_holder{
+		transform: translate(15%, 0%);
+	}
+}
+
