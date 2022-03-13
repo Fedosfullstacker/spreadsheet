@@ -13,6 +13,7 @@ var Cell ={
 }
 
 //localStorage.setItem('table_saves',"");
+//localStorage.clear();
 
 let cell_entries = Object.entries(Cell);
 for(let i in cell_entries){
@@ -47,12 +48,8 @@ function getRandomInt(max) {return Math.floor(Math.random() * max);}
 //функция загружающая контент из памяти
 function loadTableContent(table_data = null){
 	let saveTableInfo;
-	if(table_data != null){
-		saveTableInfo = table_data;
-	} else {
-		saveTableInfo = localStorage.getItem('tableSettings');
-	}                                                                                                                                //r-c
-	if(saveTableInfo == null){ saveTableInfo = "0={};1={};2={};3={};4={};5={};6={};7={};8={};9={};10={};11={};12={};13={};14={};15={};[4-4]"}
+	saveTableInfo = table_data != null ? table_data : localStorage.getItem('tableSettings');
+	saveTableInfo = saveTableInfo || "0={};1={};2={};3={};4={};5={};6={};7={};8={};9={};10={};11={};12={};13={};14={};15={};[4-4]";
 	let tableSettings = saveTableInfo.split(';');
 	let tableInfo = [];
 	for (var i = 0; i < tableSettings.length; i++) {
@@ -139,14 +136,15 @@ if(loadOnce){
 		while(j>0){removeRowFunc();j--;}
 	} 
 	loadTableContent();
-	let userInputData = localStorage.getItem('userInputData');
-	userInputData = userInputData.split(';');
-	let dataList = document.querySelector('.data_list');
-	for (var i = 0; i < userInputData.length-1; i++) {
-		dataList.innerHTML +='<div class="dis" draggable="true">'+userInputData[i]+'</div>';
+	if(localStorage.getItem('userInputData')!=null){
+		let userInputData = localStorage.getItem('userInputData');
+		userInputData = userInputData.split(';');
+		let dataList = document.querySelector('.data_list');
+		for (var i = 0; i < userInputData.length-1; i++) {
+			dataList.innerHTML +='<div class="dis" draggable="true">'+userInputData[i]+'</div>';
+		}
 	}
 	if(localStorage.getItem('table_saves') != null){
-		//console.log(localStorage.getItem('table_saves'))
 		let table_saves = localStorage.getItem('table_saves');
 		let sub_str = "";
 		for (var i = 0; i < table_saves.length; i++) {
@@ -177,10 +175,10 @@ const addColumn = document.querySelector('.add_column')
 const addRow = document.querySelector('.add_row')
 const removeColumn = document.querySelector('.remove_column')
 const removeRow = document.querySelector('.remove_row')
-const selectAll = document.querySelector('.select_all')
-const deleteAll = document.querySelector('.clear_all')
-const deleteSelection = document.querySelector('.clear_selection')
-const deleteSelected = document.querySelector('.clear_selected')
+const selectAll = document.querySelector('.list_button.select_all')
+const deleteAll = document.querySelector('.list_button.clear_all')
+const deleteSelection = document.querySelector('.list_button.clear_selection')
+const deleteSelected = document.querySelector('.list_button.clear_selected')
 
 //===============   ^   Глобальные настройки   ^   =================//
 
@@ -233,7 +231,7 @@ function saveTableContent(){
 	let minutes = new Date().getMinutes();
 	let secs = new Date().getSeconds();
 	let table_code = day+"_"+month+"_"+hours+"_"+minutes+"_"+secs;
-	let new_table_save = '<div class="table_save" name="'+table_code+'">таблица_1'+day+"."+month+" в "+hours+":"+minutes+":"+secs +"</div>";
+	let new_table_save = '<div class="table_save" name="'+table_code+'">табл_1'+day+"."+month+" в "+hours+":"+minutes+":"+secs +"</div>";
 	document.querySelector('.saving_progress').innerHTML += new_table_save;
 	if(localStorage.getItem('table_saves') != null){
 		let table_saves = localStorage.getItem('table_saves');
@@ -353,10 +351,38 @@ dataInput.addEventListener('keydown', function(e){
 		dataInput.value = "";
 	}
 });
-
 dataList.addEventListener('click',(event)=>{
 	let single_dis = event.target.closest('.dis');
-	single_dis.classList.toggle('selected');
+	if(event.shiftKey){
+		let first_cell = document.querySelector('.selected');
+		first_cell.classList.add('selected');
+		single_dis.classList.add('selected');
+		if(first_cell != undefined){
+			let all_dis = document.querySelectorAll('.dis');
+			all_dis = Array.prototype.slice.call(all_dis);
+			let start, end;
+			if(all_dis.indexOf(first_cell)>all_dis.indexOf(single_dis)){
+				start = single_dis;
+				end = first_cell;
+			} else {
+				start = first_cell;
+				end = single_dis;
+			}
+			let lever;
+			for (var i = 0; i < all_dis.length; i++) {
+				if(all_dis[i]==start){ lever = true; }
+				if(lever){
+					if(all_dis[i]==end){
+						lever = false;
+					} else {
+						all_dis[i].classList.add('selected');
+					}
+				} 
+			}
+		}
+	} else {
+		single_dis.classList.toggle('selected');
+	}
 });
 
 dataList.addEventListener('mousedown', ()=>{
@@ -379,10 +405,10 @@ dataList.addEventListener('mousedown', ()=>{
 		}
 	});
 });
-let load_table_save = document.querySelector('.load_table_save');
-let select_all_saves = document.querySelector('.select_all_saves');
-let clear_selection = document.querySelector('.clear_selection');
-let delete_selected_saves = document.querySelector('.delete_selected_saves');
+let load_table_save = document.querySelector('.saves_button.load_table_save');
+let select_all_saves = document.querySelector('.saves_button.select_all_saves');
+let clear_selection = document.querySelector('.saves_button.clear_selection');
+let delete_selected_saves = document.querySelector('.saves_button.delete_selected_saves');
 document.querySelector('.saving_progress_button').addEventListener('click',(event)=>{
 	let control_save_buttons = document.querySelector('.control_saves_buttons');
 	control_save_buttons.classList.toggle('hidden');
@@ -411,6 +437,9 @@ load_table_save.addEventListener('click', ()=>{
 	one_save.classList.remove('selected');
 	loadTableContent(retrieved_save);
 	save_table_info.classList.remove('clicked');
+	document.querySelector('.saving_progress_button').classList.remove('showing');
+	document.querySelector('.saving_progress').classList.remove('showing');
+	document.querySelector('.control_saves_buttons').classList.add('hidden')
 });
 select_all_saves.addEventListener('click',()=>{
 	let all_saves = document.querySelectorAll('.table_save');
@@ -434,18 +463,149 @@ delete_selected_saves.addEventListener('click',()=>{
 	all_saves = all_saves.split(';');
 	selected_saves_str = selected_saves_str.split(';');
 	let table_saves = [];
+	let deleted_saves = [];
 	for (var i = 0; i < all_saves.length-1; i++) {
 		if(selected_saves_str.indexOf(all_saves[i])==-1){
 			table_saves.push(all_saves[i]);
+		} else  {
+			deleted_saves.push(all_saves[i]);
 		}
 	}
-	console.log(table_saves);
-	//localStorage.setItem('table_saves',"");
-	/*document.querySelector('.saving_progress').innerHTML = "";
-	for (var i = 0; i < table_saves.length; i++) {
-		document.querySelector('.saving_progress').innerHTML += table_saves[i];
-	}*/
+	for (var i = 0; i < deleted_saves.length; i++) {
+		let save_name = "";
+		for (var j = deleted_saves[i].indexOf('name')+6; j < deleted_saves[i].length; j++) {
+			if(deleted_saves[i][j]=='"'){break;}
+			save_name += deleted_saves[i][j];
+		}
+		localStorage.removeItem(save_name);
+	}
+	let table_saves_str = "";
+	for (var i = 0; i < table_saves.length; i++) { table_saves_str += table_saves[i]+';'; }
+	localStorage.setItem('table_saves',table_saves_str);
+	
+	document.querySelector('.saving_progress').innerHTML = "";
+	if(table_saves != null){
+		for (var i = 0; i < table_saves.length; i++) {
+			document.querySelector('.saving_progress').innerHTML += table_saves[i];
+		}
+	}
 });
+let shiftPressed = false;
+let point = [];
+let fast = document.querySelector('.fast_selection');
+function getFastSelectedCells(){
+	point[2]=event.clientX;
+	point[3]=event.clientY;
+	if(shiftPressed){
+		let diap = point[1]>point[3] ? [point[3],point[1]] : [point[1],point[3]];
+		let diap2 = point[0]>point[2] ? [point[2],point[0]] : [point[0],point[2]];
+		let t_hi = document.querySelector('.main_table_holder').offsetTop;
+		let all_cells = document.querySelectorAll('.column');
+		let needed_cells = [];
+		for (var i = 0; i < all_cells.length; i++) {
+			let cell_data = all_cells[i].getBoundingClientRect();
+				//высота и низ больше начала
+				//высота и низ меньше конца
+			//(cell_data['top']>diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']<diap[1])
+				//высота меньше начала
+				//низ больше начала
+				//высота меньше конца 
+				//низ меньше конца
+			//(cell_data['top']<diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']<diap[1])
+				//высота больше начала
+				//низ больше начала
+				//высота меньше конца 
+				//низ больше конца
+			//(cell_data['top']>diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']>diap[1])
+				//высота меньше начала
+				//низ больше начала
+				//высота меньше конца 
+				//низ больше конца
+			//(cell_data['top']<diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']>diap[1])
+			if((cell_data['top']>diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']<diap[1]) 
+				|| (cell_data['top']<diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']<diap[1])
+				|| (cell_data['top']>diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']>diap[1])
+				|| (cell_data['top']<diap[0] && cell_data['bottom']>diap[0] && cell_data['top']<diap[1] && cell_data['bottom']>diap[1])){
+				needed_cells.push(all_cells[i]);
+			} 
+		}
+		let all_needed_cells = []
+		for (var i = 0; i < needed_cells.length; i++) {
+			let cell_data = all_cells[i].getBoundingClientRect();
+			if((cell_data['left']>diap2[0] && cell_data['right']>diap2[0] && cell_data['left']<diap2[1] && cell_data['right']<diap2[1]) 
+				|| (cell_data['left']<diap2[0] && cell_data['right']>diap2[0] && cell_data['left']<diap2[1] && cell_data['right']<diap2[1])
+				|| (cell_data['left']>diap2[0] && cell_data['right']>diap2[0] && cell_data['left']<diap2[1] && cell_data['right']>diap2[1])
+				|| (cell_data['left']<diap2[0] && cell_data['right']>diap2[0] && cell_data['left']<diap2[1] && cell_data['right']>diap2[1])){
+				all_needed_cells.push(needed_cells[i]);
+			} 
+		}
+		return all_needed_cells;
+	}
+}
+document.querySelector('body').addEventListener('mousedown',(event)=>{
+	if (event.shiftKey){
+		event.preventDefault();
+		shiftPressed = true;
+		fast.classList.add('action');
+		document.querySelector('body').classList.add('no_selection');
+		fast.style.left = event.clientX+'px';
+		fast.style.top = event.clientY+'px';
+		point[0] = event.clientX;
+		point[1] = event.clientY;
+	} else {
+		let list_wrap = document.querySelector('.list_name_wrapper');
+		if(!event['path'].includes(list_wrap)){
+			let cells = document.querySelectorAll('.column');
+			for (var i = 0; i < cells.length; i++) {
+				cells[i].classList.remove('fast');
+			}
+		}
+	}
+});
+document.querySelector('body').addEventListener('mousemove',(event)=>{
+	if (event.shiftKey && shiftPressed){
+		if(event.clientY < point[1] && event.clientX < point[0]){
+			fast.style.height = (point[1] - event.clientY) +'px';
+			fast.style.width = (point[0] - event.clientX) +'px';
+			$('.fast_selection').css({'transform':'translate(-100%,-100%)'})
+		} else if(event.clientY > point[1] && event.clientX < point[0]){
+			fast.style.height = (event.clientY - point[1]) +'px';
+			fast.style.width = (point[0]-event.clientX) +'px';
+			$('.fast_selection').css({'transform':'translate(-100%,0%)'})
+		} else if(event.clientY < point[1] && event.clientX > point[0]){
+			fast.style.height = (point[1] - event.clientY) +'px';
+			fast.style.width = (event.clientX - point[0]) +'px';
+			$('.fast_selection').css({'transform':'translate(0%,-100%)'})
+		} else if(event.clientY > point[1] && event.clientX > point[0]){
+			fast.style.height = (event.clientY - point[1]) +'px';
+			fast.style.width = (event.clientX - point[0]) +'px';
+			$('.fast_selection').css({'transform':'translate(0%,0%)'})
+		}
+		let all_cells = document.querySelectorAll('.column');
+		for (var i = 0; i < all_cells.length; i++) {
+			all_cells[i].classList.remove('fast');
+		}
+		let fast_cells = getFastSelectedCells();
+		for (var i = 0; i < fast_cells.length; i++) {
+			fast_cells[i].classList.add('fast');
+		}
+	}
+});
+document.querySelector('body').addEventListener('mouseup',(event)=>{
+	fast.classList.remove('action');
+	document.querySelector('body').classList.remove('no_selection');
+	fast.style.left = fast.style.top = fast.style.height = fast.style.width = '0px';
+	point[2]=event.clientX;
+	point[3]=event.clientY;
+	if(shiftPressed){
+		let fast_cells = getFastSelectedCells();
+		for (var i = 0; i < fast_cells.length; i++) {
+			fast_cells[i].classList.add('fast');
+		}
+		shiftPressed = false;
+	}
+});
+
 
 //функция добавления столбца
 function addColumnFunc(){
@@ -699,7 +859,7 @@ document.querySelector('.cogwheel_save_setting').addEventListener('click',()=>{
 	document.querySelector('.cogwheel_panel').classList.add('hidden');
 	cogwheel.classList.remove('spinning');
 });
-
+let body = document.querySelector('body');
 
 //посказки на панелях
 //разброс данных по ячейкам, нумерация, редактирование

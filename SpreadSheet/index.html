@@ -18,12 +18,9 @@
 					<div style="display: flex;justify-content: space-between;padding: 3px;">
 						<nav class="cogwheel_settings" style="display: flex; flex-direction: column;text-align: left;">
 							<a class="cogwheel_link">Размер шрифта: </a>
-							<a class="cogwheel_link">Какая-то настройка: </a>
-							<a class="cogwheel_link">Какой-то параметр: </a>
+							<input type="checkbox">
 						</nav>
 						<nav class="cogwheel_settings" style="display: flex; flex-direction: column;">
-							<input class="cogwheel_value" value="10">
-							<input class="cogwheel_value" value="10">
 							<input class="cogwheel_value" value="10">
 						</nav>
 					</div>
@@ -86,6 +83,11 @@
 			</div>
 		</div>
 		<div class="treangle"></div>
+		<div class="list_data_actions">
+			<a class="list_data_button"></a>
+			<a class="list_data_button"></a>
+			<a class="list_data_button"></a>
+		</div>
 	</div>
 </div>
 <section class="main_panel">
@@ -112,8 +114,16 @@
 		</table>
 	</div>
 </section>
-
-
+<section class="data_actions_popup">
+	<div class="">
+		<a>Вставить в каждую ячейку</a> выделенное в каждую
+		<a>Вставить по одному</a> если несколько 
+		<a>Вставть по одному до конца</a> 1 данные в одну ячейки и заново до конца
+	</div>
+</section>
+<div class="fast_selection"></div>
+<span class="coords1"></span>
+<span class="coords2"></span>
 <script src="assets/jquery-3.5.1.min.js"></script>
 <script src="assets/script.js"></script>
 </body>

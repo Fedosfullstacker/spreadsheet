@@ -33,6 +33,9 @@ body {
  	letter-spacing: -1px;
  	padding-top: 90px;
 }
+body.no_selection{
+	user-select: none;
+}
 :focus{
 	border: 0;
 	outline: none;
@@ -111,6 +114,7 @@ h1,h2,h3,h4,h5,h6{
 	max-width: 600px;
 }
 .main_panel {
+	z-index: 900;
 	display: flex; 
 	justify-content: center;
 	margin-top: 20px;
@@ -217,6 +221,9 @@ input:focus{
 	height: 80px;
 	background: #f3f3f3;
 }
+.column.fast{
+	box-shadow: 0 0 2px 2px #6a6a6a;
+}
 .column.drag_hovered{
 	box-shadow: 0 0 2px 2px #6a6a6a;
 }
@@ -249,7 +256,7 @@ input:focus{
 .list_name_wrapper{
 	position: fixed;
 	right: 0;
-	top: 15%;
+	top: 10%;
 	margin-right: 5px;
 	border: 2px solid #000;
 	border-radius: 10px;
@@ -448,6 +455,22 @@ input:focus{
 }
 .select_all_saves {}
 .delete_selected_saves {}
+.fast_selection{
+/*	
+	transform: translate(0%,-100%);
+*/
+	display: none;
+	background: skyblue;
+	opacity: 50%;
+	position: absolute;
+}
+.fast_selection.action{
+	display: block;
+}
+.coords1,
+.coords2{
+	position: absolute;
+}
 @media(max-width: 1024px){
 	.control_panel{
 		position: relative;
